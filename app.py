@@ -3,111 +3,206 @@ from datetime import datetime
 import uuid
 
 # 1. Page Configuration
-st.set_page_config(
-    page_title="Stars of Undecided Letters", 
-    page_icon="✨", 
-    layout="centered"
-)
+st.set_page_config(page_title="Stars of Undecided Letters", page_icon="✨", layout="centered")
 
-# Magic chime sound effect (Reveal sound)
-star_sound_url = "https://www.soundjay.com/magic/magic-chime-01.mp3"
-
-st.markdown(f"""
+# 2. Ultra-Aesthetic Midnight CSS
+st.markdown("""
     <style>
-    .stApp {{ background: radial-gradient(circle at center, #0b0d17 0%, #050505 100%); color: #e0e0e0; }}
-    .owner-branding {{ 
-        font-family: 'Courier New', monospace; font-size: 16px; text-align: center; 
-        color: #FFD700; font-weight: bold; letter-spacing: 3px; text-transform: uppercase; 
-        margin-bottom: 5px;
-    }}
-    .main-title {{ 
-        font-family: 'Courier New', monospace; font-size: 38px; text-align: center; 
-        color: #ffffff; text-shadow: 0 0 15px rgba(255,255,255,0.4); margin-top: -10px; 
-    }}
-    .stButton>button {{ 
-        background: transparent; color: #FFD700; border: 1px solid #FFD700; 
-        border-radius: 50%; width: 65px; height: 65px; font-size: 25px; transition: 0.3s; 
-    }}
-    .stButton>button:hover {{ box-shadow: 0 0 20px #FFD700; background: #FFD700; color: #000; }}
-    .letter-box {{ 
-        background: rgba(255,255,255,0.05); padding: 25px; border-radius: 15px; 
-        border: 1px solid rgba(255,215,0,0.3); backdrop-filter: blur(10px); 
-    }}
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400&family=Inter:wght@200;400&display=swap');
+
+    /* Global Background */
+    .stApp {
+        background: radial-gradient(circle at top, #0d1117 0%, #000000 100%);
+        color: #e5e7eb;
+    }
+
+    /* Branding Header */
+    .pety-brand {
+        font-family: 'Inter', sans-serif;
+        font-size: 10px;
+        letter-spacing: 6px;
+        text-align: center;
+        color: #fbbf24;
+        opacity: 0.6;
+        text-transform: uppercase;
+        margin-bottom: -15px;
+    }
+
+    /* Main Title */
+    .main-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 48px;
+        text-align: center;
+        background: linear-gradient(to bottom, #ffffff 30%, #4b5563 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-style: italic;
+        margin-bottom: 30px;
+    }
+
+    /* Tab Styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 24px;
+        justify-content: center;
+        background-color: transparent;
+    }
+    .stTabs [data-baseweb="tab"] {
+        font-family: 'Inter', sans-serif;
+        font-weight: 200;
+        letter-spacing: 1px;
+        color: #9ca3af !important;
+        background-color: transparent !important;
+        border: none !important;
+    }
+    .stTabs [aria-selected="true"] {
+        color: #fbbf24 !important;
+        border-bottom: 1px solid #fbbf24 !important;
+    }
+
+    /* Input Fields */
+    .stTextInput>div>div>input, .stTextArea>div>div>textarea {
+        background-color: rgba(255, 255, 255, 0.03) !important;
+        color: #fff !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 12px !important;
+        font-family: 'Inter', sans-serif;
+    }
+    .stTextInput>div>div>input:focus, .stTextArea>div>div>textarea:focus {
+        border-color: #fbbf24 !important;
+        box-shadow: 0 0 10px rgba(251, 191, 36, 0.2) !important;
+    }
+
+    /* Star Button - The "Caly" Vibe */
+    div.stButton > button {
+        background: transparent;
+        color: #fbbf24;
+        border: 1px solid rgba(251, 191, 36, 0.3);
+        border-radius: 50% !important;
+        width: 70px;
+        height: 70px;
+        font-size: 28px;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        margin: 10px auto;
+        display: block;
+    }
+    div.stButton > button:hover {
+        background: rgba(251, 191, 36, 0.1);
+        border: 1px solid #fbbf24;
+        box-shadow: 0 0 30px rgba(251, 191, 36, 0.4);
+        transform: scale(1.1) rotate(15deg);
+    }
+
+    /* Revealed Letter Card */
+    .letter-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(251, 191, 36, 0.1);
+        padding: 40px;
+        border-radius: 24px;
+        margin-top: 25px;
+        animation: slideUp 1s ease-out;
+    }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .letter-text {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 24px;
+        line-height: 1.6;
+        color: #f3f4f6;
+        font-style: italic;
+        text-align: center;
+    }
+
+    .letter-meta {
+        text-align: center;
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: #fbbf24;
+        margin-top: 30px;
+        text-transform: uppercase;
+        opacity: 0.8;
+    }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        font-size: 10px;
+        color: #374151;
+        margin-top: 100px;
+        letter-spacing: 1px;
+    }
     </style>
-    
-    <script>
-    function playStarSound() {{
-        var audio = new Audio('{star_sound_url}');
-        audio.volume = 0.4;
-        audio.play();
-        setTimeout(function() {{
-            audio.pause();
-        }}, 3000);
-    }}
-    </script>
     """, unsafe_allow_html=True)
 
-if 'undecided_letters' not in st.session_state:
-    st.session_state.undecided_letters = []
+# 3. Session State Initialization
+if 'letters_db' not in st.session_state:
+    st.session_state.letters_db = []
 
-query_params = st.query_params
-msg_id = query_params.get("id", "")
-
-# --- RECIPIENT VIEW ---
-if msg_id:
-    found = next((m for m in st.session_state.undecided_letters if m['id'] == msg_id), None)
-    if found:
-        st.markdown('<h1 class="main-title">Stars of Undecided Letters</h1>', unsafe_allow_html=True)
-        st.write("<p style='text-align: center; opacity: 0.7;'>A star has found you.</p>", unsafe_allow_html=True)
-        
-        col1, col2, col3 = st.columns([1,1,1])
-        with col2:
-            if st.button("⭐", key="direct"):
-                st.components.v1.html(f"""<script>window.parent.playStarSound();</script>""", height=0)
-                st.session_state.show_direct = True
-        
-        if st.session_state.get("show_direct", False):
-            st.markdown(f"""<div class="letter-box">
-                <small style='color:gray;'>{found['time']}</small>
-                <p style='font-family:Courier New; font-size:18px; margin-top:10px;'>{found['content']}</p>
-                <p style='text-align:right; color:#FFD700; font-size:12px;'>— For: {found['to'].upper()}</p>
-            </div>""", unsafe_allow_html=True)
+# --- HEADER ---
+st.markdown('<p class="pety-brand">PETY</p>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-title">Stars of Undecided Letters</h1>', unsafe_allow_html=True)
 
 # --- MAIN NAVIGATION ---
-else:
-    st.markdown('<p class="owner-branding">PETY</p>', unsafe_allow_html=True)
-    st.markdown('<h1 class="main-title">Stars of Undecided Letters</h1>', unsafe_allow_html=True)
+tab1, tab2 = st.tabs(["🔍 Search the Sky", "✍️ Write a Letter"])
+
+with tab1:
+    st.write("<br>", unsafe_allow_html=True)
+    search_name = st.text_input("", placeholder="Enter your name...", key="search_input")
     
-    tab1, tab2 = st.tabs(["🔍 Search Sky", "✍️ Leave Letter"])
-
-    with tab1:
-        search_name = st.text_input("Whose star are you seeking?", placeholder="Enter name...")
-        if search_name:
-            query = search_name.lower().strip()
-            results = [m for m in st.session_state.undecided_letters if m['to'] == query]
-            if results:
-                st.write(f"✨ Found {len(results)} star(s):")
-                for i, res in enumerate(results):
-                    if st.button(f"⭐ Open Star {i+1}", key=f"s_{i}"):
-                        st.components.v1.html(f"""<script>window.parent.playStarSound();</script>""", height=0)
-                        st.session_state[f"reveal_{i}"] = True
-                    
-                    if st.session_state.get(f"reveal_{i}", False):
-                        st.markdown(f'<div class="letter-box"><p>{res["content"]}</p></div>', unsafe_allow_html=True)
-
-    with tab2:
-        with st.form("letter_form", clear_on_submit=True):
-            to_name = st.text_input("To:", placeholder="Recipient's Name")
-            message = st.text_area("Message:", placeholder="Things left unsaid...")
+    if search_name:
+        query = search_name.lower().strip()
+        results = [l for l in st.session_state.letters_db if l['to'] == query]
+        
+        if results:
+            st.markdown(f"<p style='text-align:center; color:#fbbf24;'>✨ Found {len(results)} star(s) for you.</p>", unsafe_allow_html=True)
             
-            if st.form_submit_button("Release to the Sky"):
-                if to_name and message:
-                    uid = str(uuid.uuid4())[:8]
-                    st.session_state.undecided_letters.append({
-                        "id": uid, 
-                        "to": to_name.lower().strip(), 
-                        "content": message, 
-                        "time": datetime.now().strftime("%d %b %Y").upper()
-                    })
-                    st.success("Released!")
-                    st.code(f"https://stars-of-undecided-letters.streamlit.app/?id={uid}")
+            # Show a glowing star for each result
+            for i, res in enumerate(results):
+                if st.button("⭐", key=f"star_{i}"):
+                    st.session_state[f"reveal_{i}"] = True
+                
+                if st.session_state.get(f"reveal_{i}", False):
+                    st.markdown(f"""
+                        <div class="letter-card">
+                            <div class="letter-text">"{res['content']}"</div>
+                            <div class="letter-meta">FOR: {res['to']} — {res['date']}</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    if st.button("Let it fade into the void", key=f"fade_{i}"):
+                        st.session_state[f"reveal_{i}"] = False
+                        st.rerun()
+        else:
+            st.markdown("<p style='text-align:center; opacity:0.5;'>The sky is quiet for this name... for now.</p>", unsafe_allow_html=True)
+
+with tab2:
+    st.write("<br>", unsafe_allow_html=True)
+    with st.form("letter_form", clear_on_submit=True):
+        to_name = st.text_input("Who is this letter for?", placeholder="Recipient's Name")
+        message = st.text_area("Your undecided words...", placeholder="Write the things you never said...", height=150)
+        
+        submitted = st.form_submit_button("Release to the Stars")
+        
+        if submitted:
+            if to_name and message:
+                uid = str(uuid.uuid4())[:8]
+                st.session_state.letters_db.append({
+                    "id": uid,
+                    "to": to_name.lower().strip(),
+                    "content": message,
+                    "date": datetime.now().strftime("%B %d, %Y").upper()
+                })
+                st.success("Your words have become a star in the sky.")
+                
+                # Link generation (Shareable)
+                link = f"https://stars-of-undecided-letters.streamlit.app/?id={uid}"
+                st.markdown("### 🔗 Share this Secret Star:")
+                st.code(link)
+            else:
+                st.error("Please fill in both fields.")
+
+# --- FOOTER ---
+st.markdown('<div class="footer">STARS OF UNDECIDED LETTERS • 2026</div>', unsafe_allow_html=True)
